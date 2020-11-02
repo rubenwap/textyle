@@ -65,14 +65,13 @@ class MatchTest extends AnyFunSuite {
   }
 
   test("Matches are returned only if the consecutive word is also a match") {
-    assert(filteredMatches.size === 6)
+    println(filteredMatches)
+    assert(filteredMatches.size === 5)
   }
 
   test("Matches are scored according to the amount of user tokens found in the filtered matches") {
     val classifiedMatch = filteredMatches.distinct.groupBy(m => m.filename)
-
     val scores = classifiedMatch.keys.map(k => (k, classifiedMatch(k).length * 100 / userTokens.length)).toList
-    println(scores)
   }
 
 }

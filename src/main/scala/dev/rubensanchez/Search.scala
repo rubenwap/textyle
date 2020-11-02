@@ -16,9 +16,10 @@ object Search {
     println(s"""${files.length} files in the ${args(0)} directory""")
 
     val index = Match.readInMemory(files)
+    println(index)
 
     while(true) {
-      val query = scala.io.StdIn.readLine()
+      val query = scala.io.StdIn.readLine(">")
       if (query.toLowerCase() == ":q") {
         println("Bye!")
         sys.exit(0)

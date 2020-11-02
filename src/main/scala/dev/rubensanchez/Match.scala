@@ -10,8 +10,8 @@ object Match {
 
   def tokenizeText(text: String): Array[String] = {
 
-    for (word <- text.trim().toLowerCase().split(" ") if word.length() > 0)
-      yield word
+    for (word <- text.trim().split(" ") if word.length() > 0)
+      yield word.toLowerCase()
         .replaceAll("""[\p{Punct}]|[\p{Space}]""", "")
   }
 
@@ -27,14 +27,21 @@ object Match {
   }
 
   def performMatching(tokens: List[String], index: List[Match]): List[Match] = {
-    index.filter(item => tokens.contains(item.word)).sortBy(m => m.index)
+    tokens.map(t => index.filter(item => item.word == t).sortBy(m => m.index)).flatten(m => m)
   }
 
   def recomposeMatches(tokens: List[String], results: List[Match]): List[Match] = {
     if (tokens.length == 1) {
-      results.take(5)
+      results
+        .take(5)
     } else {
-      results.sliding(2).filter(m => m.head.index == (m(1).index - 1) && m.head.filename == m(1).filename).flatten(m => m).toList
+      results
+        .sortBy(i => i.index)
+        .sliding(2)
+        .filter(m => m.head.index == (m(1).index - 1) && m.head.filename == m(1).filename)
+        .flatten(m => m)
+        .distinct
+        .toList
     }
   }
 
