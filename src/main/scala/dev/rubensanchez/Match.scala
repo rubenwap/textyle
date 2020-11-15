@@ -10,7 +10,12 @@ object Match {
 
   def tokenizeText(text: String): Array[String] = {
 
-    for (word <- text.trim().split(" ") if word.length() > 0)
+    for (word <- text.trim()
+      .replaceAll("""\n""", " ")
+      .replaceAll("""\t""", " ")
+      .split(" ") 
+    
+         if word.length() > 0)
       yield word.toLowerCase()
         .replaceAll("""[\p{Punct}]|[\p{Space}]""", "")
   }
@@ -21,7 +26,8 @@ object Match {
       val bufferedSource = Source.fromFile(f)
       val tokens = tokenizeText(bufferedSource.getLines().mkString)
       bufferedSource.close
-      tokens.map(t => Match(t, tokens.indexOf(t), f.getName))
+      
+      tokens.zipWithIndex.map(t => Match(t._1, t._2, f.getName))
     }
     ).flatten(f => f)
   }

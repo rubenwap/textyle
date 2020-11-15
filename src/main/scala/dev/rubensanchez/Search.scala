@@ -18,7 +18,7 @@ object Search {
     val index = Match.readInMemory(files)
     println(index)
 
-    while(true) {
+    while (true) {
       val query = scala.io.StdIn.readLine(">")
       if (query.toLowerCase() == ":q") {
         println("Bye!")
@@ -37,8 +37,6 @@ object Search {
         }
       }
     }
-
-
 
 
   }
