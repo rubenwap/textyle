@@ -49,6 +49,7 @@ class MatchTest extends AnyFunSuite {
   val userTokens: List[String] = List("admired", "no", "messenger")
   val matching: List[Match] = performMatching(userTokens, inMemoryIndex)
   val filteredMatches: List[Match] = recomposeMatches(userTokens, matching)
+  val finalScore: List[(String, Int)] = List(("test.txt",100), ("test2.txt",66))
 
   test("Input string should be correctly tokenized") {
     assert(testString === expectedTokenized)
@@ -70,8 +71,7 @@ class MatchTest extends AnyFunSuite {
   }
 
   test("Matches are scored according to the amount of user tokens found in the filtered matches") {
-    val classifiedMatch = filteredMatches.distinct.groupBy(m => m.filename)
-    val scores = classifiedMatch.keys.map(k => (k, classifiedMatch(k).length * 100 / userTokens.length)).toList
+    assert(calculateScore(filteredMatches, userTokens) == finalScore)
   }
 
 }

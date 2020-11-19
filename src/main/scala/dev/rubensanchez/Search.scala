@@ -16,7 +16,6 @@ object Search {
     println(s"""${files.length} files in the ${args(0)} directory""")
 
     val index = Match.readInMemory(files)
-    println(index)
 
     while (true) {
       val query = scala.io.StdIn.readLine(">")
@@ -31,15 +30,11 @@ object Search {
         if (scoredMatches.isEmpty) {
           println("No results found")
         } else {
-          scoredMatches.take(5).foreach(i => {
+          scoredMatches.foreach(i => {
             println(s"""${i._2}%: ${i._1}""")
           })
         }
       }
     }
-
-
   }
-
-
 }
